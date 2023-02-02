@@ -1,0 +1,20 @@
+{
+  "environment": "dev",
+  "projectName": "ATHENA",
+  "gemjarSubID": "test_id",
+  "gemjarUserName": "tchauhan1",
+  "gemjarToken": "3548cf51-4f28-4949-a8db-bdbb2f3027091673956073987",
+  "jewelEntryUrl": "https://apis.gemecosystem.com/enter-point",
+  "glueCode":"org.gemini.athena.StepDefinition",
+  "feature": "src/main/resources/features/athena.feature",
+  "dev": {
+    "browserName": "chrome",
+    "launchUrl": "https://athena-dev.geminisolutions.com/login",
+    "browserTimeout": 100
+  },
+  "prod": {
+    "browserName": "chrome",
+    "launchUrl": "https://athena.geminisolutions.com/login",
+    "browserTimeout": 100
+  }
+}
