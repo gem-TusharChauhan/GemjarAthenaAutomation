@@ -379,6 +379,7 @@ public class AthenaStepDefinition {
     @Given("Clicking on forgot password link")
     public void clicking_on_forgot_password_link() throws Exception {
         try{
+
         DriverAction.waitSec(2);
         DriverAction.click(Locator.frgtpswrd);
         if(DriverAction.getCurrentURL().equals(forgoturl)){
