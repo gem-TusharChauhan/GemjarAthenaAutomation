@@ -27,7 +27,7 @@ public class Locator {
     public static By newcntct=By.id("contact");
     public static By countexp=By.id("experience");
     public static By sgnupbuttn=By.xpath("//span[text()=\"SIGN UP\"]");
-    public static By signuptoast=By.xpath("//div[text()=\"p-toast-summary ng-tns-c83-34\"]");
+    public static By signuptoast=By.xpath("//div[text()=\"User Registered Successfully\"]");
     public static By invalidsignuptoast=By.xpath("//div[text()=\"The username already exist in system\"]");
     public static By campusdrpdwn=By.xpath("/html/body/athena-root/div/athena-auth/athena-register/div/div[1]/form/div[3]/div[7]/span/p-dropdown/div");
     public static By expdrpdwn=By.xpath("/html/body/athena-root/div/athena-auth/athena-register/div/div[1]/form/div[3]/div[8]/span/p-dropdown/div");

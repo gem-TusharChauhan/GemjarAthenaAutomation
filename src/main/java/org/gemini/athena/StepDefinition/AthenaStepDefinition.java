@@ -12,6 +12,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import Locators.Locator;
 
+import java.sql.Driver;
 import java.util.List;
 
 
@@ -27,7 +28,6 @@ public class AthenaStepDefinition {
     @Given("Navigating to Athena portal")
     public void Navigating_to_Athena_portal() throws Exception {
         try {
-            DriverAction.maximizeBrowser();
             String s = DriverAction.getCurrentURL();
             String title = DriverAction.getTitle(s);
             GemTestReporter.addTestStep("Page title", "title= " + title, STATUS.INFO);
@@ -52,8 +52,8 @@ public class AthenaStepDefinition {
         }
     }
 
-    @Then("^Count (.+) tests")
-    public void Count_active_tests(String test) throws Exception {
+    @Then("^Verify (.+) tests")
+    public void Verify_tests(String test) throws Exception {
         try {
             DriverAction.waitSec(2);
             if (test.equals("Active")) {
@@ -64,11 +64,12 @@ public class AthenaStepDefinition {
                     logger.info("There are no active tests");
                     GemTestReporter.addTestStep("No Test found", "There are no active tests", STATUS.FAIL, DriverAction.takeSnapShot());
                 } else {
-                    Integer activetest = tests.size();
+                    int activetest = tests.size();
                     logger.info("Total number of active tests are " + activetest);
-                    for (int i = 0; i < activetest; i++) {
-                        logger.info(tests.get(i).getText());
+                    for(WebElement webElement : tests) {
+                        logger.info(webElement.getText());
                     }
+
                     DriverAction.waitSec(2);
                     GemTestReporter.addTestStep("Test Found", "Active test validated", STATUS.PASS, DriverAction.takeSnapShot());
                 }
@@ -81,7 +82,7 @@ public class AthenaStepDefinition {
                     logger.info("There are no completed tests");
                     GemTestReporter.addTestStep("No test found", "There are no completed test", STATUS.FAIL, DriverAction.takeSnapShot());
                 } else {
-                    Integer completedtest = tests.size();
+                    int completedtest = tests.size();
                     logger.info("Total number of completed tests are " + completedtest);
                     List<WebElement> testtitle = DriverAction.getElements(By.xpath("//div[@class=\"control-overflow longer-name\"]"));
                     for (int i = 0; i < completedtest; i++) {
@@ -104,7 +105,6 @@ public class AthenaStepDefinition {
     @Given("^Navigating to my profile after login (.+) and (.+)")
     public void Navigating_to_my_profile_after_login_and(String user, String pass) throws Exception {
         try {
-            DriverAction.maximizeBrowser();
             DriverAction.typeText(Locator.usernm, user);
             DriverAction.typeText(Locator.pswrd, pass);
             DriverAction.click(Locator.lgnbtn);
@@ -203,16 +203,15 @@ public class AthenaStepDefinition {
     @Given("^Enter username as (.+) and password as (.+)")
     public void enter_username_as_and_password_as(String user, String pass) throws Exception {
         try {
-            DriverAction.maximizeBrowser();
             if (user.equals("NULL")) {
                 DriverAction.waitSec(3);
                 DriverAction.typeText(By.id("password"), pass);
                 String error=DriverAction.getElementText(By.id("username-help"));
-                GemTestReporter.addTestStep("Username is not present","Error message is " +error,STATUS.PASS);
+                GemTestReporter.addTestStep("Username is not present","Error message is 'The Field is required'" +error,STATUS.PASS);
             } else if (pass.equals("NULL")) {
                 DriverAction.waitSec(3);
                 DriverAction.typeText(By.id("firstname5"), user);
-                GemTestReporter.addTestStep("Password is not present","Error message is ",STATUS.PASS);
+                GemTestReporter.addTestStep("Password is not present","Error message is 'The Field is required'",STATUS.PASS);
             } else {
                 GemTestReporter.addTestStep("Input value error", "Username or password input issue", STATUS.FAIL, DriverAction.takeSnapShot());
 
@@ -329,6 +328,7 @@ public class AthenaStepDefinition {
     public void validating_signup() throws Exception {
         try {
             DriverAction.click(Locator.sgnupbuttn);
+            DriverAction.waitSec(2);
 
             if (DriverAction.getElement(Locator.signuptoast).isDisplayed()) {
                 GemTestReporter.addTestStep("Signup Successfull", "User register successful", STATUS.PASS, DriverAction.takeSnapShot());
@@ -348,7 +348,6 @@ public class AthenaStepDefinition {
     @Given("Clicking on forgot password link")
     public void clicking_on_forgot_password_link() throws Exception {
         try{
-
         DriverAction.waitSec(2);
         DriverAction.click(Locator.frgtpswrd);
         if(DriverAction.getCurrentURL().equals(forgoturl)){
@@ -369,7 +368,7 @@ public class AthenaStepDefinition {
         try {
             DriverAction.typeText(By.id("email"), user);
             DriverAction.click(By.xpath("//span[text()=\"RESET\"]"));
-            DriverAction.waitSec(1);
+            DriverAction.waitSec(2);
         }
         catch (Exception e) {
             logger.info("An exception occurred!", e);
@@ -382,7 +381,7 @@ public class AthenaStepDefinition {
         try {
             if (DriverAction.getElement(Locator.resetpwdtoast).isDisplayed()) {
                 GemTestReporter.addTestStep("Password reset successfull", "Password is reset", STATUS.PASS, DriverAction.takeSnapShot());
-            } else if (DriverAction.getElement(Locator.invalidsignuptoast).isDisplayed()) {
+            } else if (DriverAction.getElement(Locator.invalidresettoast).isDisplayed()) {
                 GemTestReporter.addTestStep("Password reset unsuccessfull", "Password is not reset", STATUS.FAIL, DriverAction.takeSnapShot());
             } else
                 GemTestReporter.addTestStep("Some error occured", "Invalid action", STATUS.FAIL, DriverAction.takeSnapShot());
