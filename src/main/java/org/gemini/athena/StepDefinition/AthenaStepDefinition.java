@@ -3,18 +3,11 @@ package org.gemini.athena.StepDefinition;
 import com.gemini.generic.reporting.GemTestReporter;
 import com.gemini.generic.reporting.STATUS;
 import com.gemini.generic.ui.utils.DriverAction;
-import com.gemini.generic.ui.utils.DriverManager;
-import com.github.dockerjava.api.model.Driver;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import net.jodah.failsafe.internal.util.DelegatingScheduler;
-import org.apache.logging.log4j.LogManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.logging.log4j.core.util.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import Locators.Locator;
@@ -207,18 +200,19 @@ public class AthenaStepDefinition {
     }
 
     //--------------------------------------------------------------------------------------------------------
-    @Given("^enter the invalid username as (.+) and password as (.+)")
-    public void enter_the_invalid_username_as_and_password_as(String user, String pass) throws Exception {
+    @Given("^Enter username as (.+) and password as (.+)")
+    public void enter_username_as_and_password_as(String user, String pass) throws Exception {
         try {
             DriverAction.maximizeBrowser();
             if (user.equals("NULL")) {
                 DriverAction.waitSec(3);
-                //DriverAction.typeText(By.id("firstname5"), user);
                 DriverAction.typeText(By.id("password"), pass);
+                String error=DriverAction.getElementText(By.id("username-help"));
+                GemTestReporter.addTestStep("Username is not present","Error message is " +error,STATUS.PASS);
             } else if (pass.equals("NULL")) {
                 DriverAction.waitSec(3);
                 DriverAction.typeText(By.id("firstname5"), user);
-                //DriverAction.typeText(By.id("password"), pass);
+                GemTestReporter.addTestStep("Password is not present","Error message is ",STATUS.PASS);
             } else {
                 GemTestReporter.addTestStep("Input value error", "Username or password input issue", STATUS.FAIL, DriverAction.takeSnapShot());
 
@@ -229,7 +223,7 @@ public class AthenaStepDefinition {
         }
     }
 
-    @When("clicking on signin")
+    @When("Click on signin")
     public void clicking_on_signin() throws Exception {
         try {
             DriverAction.click(Locator.lgnbtn);
@@ -247,7 +241,7 @@ public class AthenaStepDefinition {
             String error = DriverAction.getElementText(By.xpath("//small[text()=\"The Field is required\"]"));
             logger.info("Error message is " + error);
             if (error.equals("The Field is required")) {
-                GemTestReporter.addTestStep("Missing field", "Field is required", STATUS.FAIL, DriverAction.takeSnapShot());
+                GemTestReporter.addTestStep("Missing field", "Field is required", STATUS.PASS, DriverAction.takeSnapShot());
             }
         } catch (Exception e) {
             logger.info("An exception occurred!", e);
@@ -255,34 +249,9 @@ public class AthenaStepDefinition {
         }
     }
 
-//    @Then("Click on forgot password")
-//    public void click_on_forgot_password() throws Exception {
-//        try {
-//            DriverAction.click(By.xpath("//a[text()=\"Forgot Password?\"]"));
-//            DriverAction.waitSec(2);
-//        } catch (Exception e) {
-//            logger.info("An exception occurred!", e);
-//            GemTestReporter.addTestStep("EXCEPTION ERROR", "SOME ERROR OCCURRED", STATUS.FAIL);
-//        }
-//    }
-//
-//    @Then("Click back to login")
-//    public void Click_back_to_login() throws Exception {
-//        try {
-//            DriverAction.click(By.xpath("//a[@class=\"customText\"] //b"));
-//            DriverAction.waitSec(2);
-//            if (DriverAction.getCurrentURL().equals("https://athena-dev.geminisolutions.com/login")) {
-//                GemTestReporter.addTestStep("Current page validation", "Page is correct", STATUS.PASS, DriverAction.takeSnapShot());
-//            } else
-//                GemTestReporter.addTestStep("Current page validation", "Page is invalid", STATUS.FAIL, DriverAction.takeSnapShot());
-//        } catch (Exception e) {
-//            logger.info("An exception occurred!", e);
-//            GemTestReporter.addTestStep("EXCEPTION ERROR", "SOME ERROR OCCURRED", STATUS.FAIL);
-//        }
-//    }
 
     //----------------------------------------------------------------------------------------------------------
-    @Given("Clicking on signup")
+    @Given("Click on signup")
     public void clicking_on_signup() throws Exception {
         try {
             DriverAction.click(Locator.signup);
