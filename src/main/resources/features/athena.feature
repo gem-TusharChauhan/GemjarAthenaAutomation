@@ -1,6 +1,6 @@
 Feature: Athena Portal Automation
 
- Scenario Outline: Validate Active and Completed tests
+ Scenario Outline: Athena-Validate Active and Completed tests
    Given Navigating to Athena portal
    When Entering username <user> and <pass> password
    Then Verify <test> tests
@@ -12,13 +12,12 @@ Feature: Athena Portal Automation
      | susheel7@gmail.com | abc@1234 | Comp|
 
   Scenario Outline: Validate My Profile data and Explore test
-   Given Navigating to my profile after login <user> and <pass>
-   When Capture the profile data
-   Then Click on Explore test and validate url
+   Given Navigate to my profile after login <user> and <pass>
+   When  Validating User
+   Then Click on Explore test and validate URL
     Examples:
       | user               | pass |
       | susheel7@gmail.com | abc@1234 |
-
 
 
   Scenario Outline: Change Password
@@ -46,14 +45,14 @@ Feature: Athena Portal Automation
       Then Validating signup
       Examples:
         | email              |pass    | cnfrmpass| firstname|lastname | contact   |experience | expcount     |campus |
-        | tushar16@gmail.com |abc@123 | abc@123  | Tushar   |Chauhan  | 8796978697|Fresher    | NULL         |Chitkara university, Chitkara |
-        | tushar26@gmail.com |abc@123 | abc@123  | Tushar   |Chauhan  | 8796970097|Experience | 5            |NULL|
+        | tushar39@gmail.com |abc@123 | abc@123  | Tushar   |Chauhan  | 8796978697|Fresher    | NULL         |Chitkara university, Chitkara |
+        | tushar35@gmail.com |abc@123 | abc@123  | Tushar   |Chauhan  | 8796970097|Experience | 5            |NULL|
 
-    Scenario Outline: Forgot Password validations
-      Given Clicking on forgot password link
+    Scenario Outline: Forgot Password Validations
+      Given Click on forgot password link
       When Entering the username <user>
-      Then Validating reset mail sent or not
+      Then Validating reset mail sent or not to <user>
       Examples:
         | user           |
         |Hello1@gmail.com|
-        |Hell@gamil.com |
+        |Hell@gamil.com  |
