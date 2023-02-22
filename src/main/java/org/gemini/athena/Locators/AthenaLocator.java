@@ -1,8 +1,7 @@
-package Locators;
+package org.gemini.athena.Locators;
 
-import com.gemini.generic.ui.utils.DriverAction;
 import org.openqa.selenium.By;
-public class Locator {
+public class AthenaLocator {
 
     public static By usernm = By.xpath("//input[@formcontrolname='username']");
     public static By pswrd = By.xpath("//input[@formcontrolname='password']");
@@ -30,6 +29,5 @@ public class Locator {
     public static By toast=By.xpath("//div[contains(@class,'p-toast p-component p-toast-top-right')]//child::div[contains(@class,'p-toast-message-text')]/div[2]");
     public static By campusdrpdwn=By.xpath("/html/body/athena-root/div/athena-auth/athena-register/div/div[1]/form/div[3]/div[7]/span/p-dropdown/div");
     public static By expdrpdwn=By.xpath("/html/body/athena-root/div/athena-auth/athena-register/div/div[1]/form/div[3]/div[8]/span/p-dropdown/div");
-
 
 }

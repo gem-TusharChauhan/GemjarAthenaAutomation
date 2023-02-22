@@ -12,6 +12,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.gemini.athena.Locators.SuperadminLocator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,58 +43,78 @@ public class SuperAdminStepDefinition {
             DriverAction.waitSec(5);
         } catch (Exception e) {
             logger.info("An exception occurred!", e);
-            GemTestReporter.addTestStep("EXCEPTION ERROR", "SOME ERROR OCCURRED", STATUS.FAIL);
+           reporter("EXCEPTION ERROR", "SOME ERROR OCCURRED", STATUS.FAIL);
         }
 
     }
 
     @Then("Validate Login")
     public void validateLogin() {
-        System.out.println(DriverManager.getWebDriver().getTitle());
-        if (admindashboard.equals(DriverAction.getCurrentURL())) {
-            GemTestReporter.addTestStep("Login Successfull", "Navigated to SuperAdmin Dashboard", STATUS.PASS);
-        } else
-            GemTestReporter.addTestStep("Login Unsuccessfull", "Navigation to SuperAdmin Dashboard Failed", STATUS.FAIL);
+        try{
+            System.out.println(DriverManager.getWebDriver().getTitle());
+            if (admindashboard.equals(DriverAction.getCurrentURL())) {
+                reporter("Login Successfull", "Navigated to SuperAdmin Dashboard", STATUS.PASS);
+            } else
+                reporter("Login Unsuccessfull", "Navigation to SuperAdmin Dashboard Failed", STATUS.FAIL);
+        }catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
+
     }
 
     @Then("Verify options are visible after toggle click")
     public void verifyOptionsAreVisibleOrNot() {
-        DriverAction.click(SuperadminLocator.toglbtn);
-        DriverAction.waitUntilElementAppear(SuperadminLocator.toglst, 5);
-        if (DriverAction.isExist(SuperadminLocator.toglst))
-            GemTestReporter.addTestStep("Clicked on Toggle button", "List is displayed", STATUS.PASS, DriverAction.takeSnapShot());
-        else
-            GemTestReporter.addTestStep("Click failed on toggle button", "List is not displayed", STATUS.PASS, DriverAction.takeSnapShot());
+        try{
+            DriverAction.click(SuperadminLocator.toglbtn);
+            DriverAction.waitUntilElementAppear(SuperadminLocator.toglst, 5);
+            if (DriverAction.isExist(SuperadminLocator.toglst))
+                reporter("Clicked on Toggle button", "List is displayed", STATUS.PASS);
+            else
+                reporter("Click failed on toggle button", "List is not displayed", STATUS.PASS);
+        }catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
+
     }
 
 
     @Then("Validate data tables on Dashboard")
     public void validateDataTables() {
-        DriverAction.scrollToBottom();
-        if (DriverAction.isExist(SuperadminLocator.activetesttbl)) {
-            GemTestReporter.addTestStep("Table Visible", "Active Test table is visible", STATUS.PASS, DriverAction.takeSnapShot());
-        } else reporter("Failed", "Active Test table is not visible", STATUS.FAIL);
-        if (DriverAction.isExist(SuperadminLocator.campusperftbl)) {
-            GemTestReporter.addTestStep("Table Visible", "Campus Performance table is visible", STATUS.PASS);
-        } else reporter("Failed", "Campus Performance table is not visible", STATUS.FAIL);
-        if (DriverAction.isExist(SuperadminLocator.ongoingevttbl)) {
+        try{
+            DriverAction.scrollToBottom();
+            if (DriverAction.isExist(SuperadminLocator.activetesttbl)) {
+              reporter("Table Visible", "Active Test table is visible", STATUS.PASS);
+            } else reporter("Failed", "Active Test table is not visible", STATUS.FAIL);
+            if (DriverAction.isExist(SuperadminLocator.campusperftbl)) {
+                reporter("Table Visible", "Campus Performance table is visible", STATUS.PASS);
+            } else reporter("Failed", "Campus Performance table is not visible", STATUS.FAIL);
+            if (DriverAction.isExist(SuperadminLocator.ongoingevttbl)) {
 //            GemTestReporter.addTestStep("Table Visible","Ongoing Event table is visible",STATUS.PASS);
-            reporter("Table visible", "Ongoing Event table is visible", STATUS.PASS);
-        } else reporter("Failed", "Ongoing event table is not visible", STATUS.FAIL);
+                reporter("Table visible", "Ongoing Event table is visible", STATUS.PASS);
+            } else reporter("Failed", "Ongoing event table is not visible", STATUS.FAIL);
+        }catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
+
 
     }
 
     @When("Click on Manage Sections")
     public void clickOnManageSections() {
-        List<WebElement> togglelist = DriverAction.getElements(SuperadminLocator.toglstoptions);
-        for (int i = 0; i < togglelist.size(); i++) {
-            if (togglelist.get(i).getText().equals("Manage Sections")) {
-                DriverAction.click(togglelist.get(i));
-                DriverAction.waitSec(5);
-                DriverAction.click(SuperadminLocator.toglclose);
-                break;
+        try{
+            List<WebElement> togglelist = DriverAction.getElements(SuperadminLocator.toglstoptions);
+            for (int i = 0; i < togglelist.size(); i++) {
+                if (togglelist.get(i).getText().equals("Manage Sections")) {
+                    DriverAction.click(togglelist.get(i));
+                    DriverAction.waitSec(5);
+                    DriverAction.click(SuperadminLocator.toglclose);
+                    break;
+                }
             }
+        }catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
         }
+
     }
 
     @When("Create New Manage Section")
@@ -109,67 +131,203 @@ public class SuperAdminStepDefinition {
 
     @Then("Validate section is created")
     public void validateSectionIsCreated() {
-        DriverAction.waitSec(5);
-        DriverAction.typeText(By.xpath("//input[@placeholder='Search by Section']"), "Test1");
+        try {
+            DriverAction.waitSec(5);
+            DriverAction.typeText(By.xpath("//input[@placeholder='Search by Section']"), "Test1");
 //No Records Found for the selected search criteria!
-        List<WebElement> sectlist = DriverAction.getElements(SuperadminLocator.sectionlist);
-        if (sectlist.size() > 0) {
-            reporter("Section Found", "Searched Section is visible", STATUS.PASS);
-        } else reporter("Section not found", "Searched section not present", STATUS.FAIL);
+            List<WebElement> sectlist = DriverAction.getElements(SuperadminLocator.sectionlist);
+            if (sectlist.size() > 0) {
+                reporter("Section Found", "Searched Section is visible", STATUS.PASS);
+            } else reporter("Section not found", "Searched section not present", STATUS.FAIL);
+        } catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
     }
 
+
+    //----------------Test Scenario-------------------------------------------------------------------------------
     @When("Click on Test Section")
     public void clickOnTestSection() {
-        DriverAction.click(SuperadminLocator.toglbtn);
-        List<WebElement> togglelist = DriverAction.getElements(SuperadminLocator.toglstoptions);
-        for (int i = 0; i < togglelist.size(); i++) {
-            if (togglelist.get(i).getText().equals("Tests")) {
-                DriverAction.click(togglelist.get(i));
-                DriverAction.waitSec(2);
+        try {
+            DriverAction.click(SuperadminLocator.toglbtn);
+            List<WebElement> togglelist = DriverAction.getElements(SuperadminLocator.toglstoptions);
+            for (int i = 0; i < togglelist.size(); i++) {
+                if (togglelist.get(i).getText().equals("Tests")) {
+                    DriverAction.click(togglelist.get(i));
+                    DriverAction.waitSec(2);
+                }
             }
+        } catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
         }
     }
 
     @When("^Select test (.+) options")
     public void selectTestTestOptions(String test) {
-        int flag = 0;
-        List<WebElement> list = DriverAction.getElements(SuperadminLocator.listtogldropdown);
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getText().equals(test)) {
-                DriverAction.click(list.get(i));
-                DriverAction.waitSec(2);
-                DriverAction.click(SuperadminLocator.toglclose);
-                flag = 1;
-                break;
+        try {
+            int flag = 0;
+            List<WebElement> list = DriverAction.getElements(SuperadminLocator.listtogldropdown);
+            for (int i = 0; i < list.size(); i++) {
+                String tstval = list.get(i).getText();
+                if (tstval.equals(test)) {
+                    DriverAction.click(list.get(i));
+                    DriverAction.waitSec(2);
+                    DriverAction.click(SuperadminLocator.toglclose);
+                    flag = 1;
+                    break;
+                }
             }
+            if (flag == 1) {
+                reporter("Clicked on " + test + " test", "Successfully clicked", STATUS.PASS);
+            } else reporter("Loop failed for tests options", "Values doesnt get clicked", STATUS.FAIL);
+        } catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
         }
-        if (flag == 1) {
-            reporter("Clicked on " + test + " test", "Successfully clicked", STATUS.PASS);
-        } else reporter("Loop failed for tests options", "Values doesnt get clicked", STATUS.FAIL);
     }
-
     @When("^Select university as (.+) from campus dropdown")
     public void selectUniversityFromCampusDropdown(String campus) {
-        int flag=0;
-        DriverAction.click(SuperadminLocator.campusDrpdwn);
-        List<WebElement> campuslist = DriverAction.getElements(By.xpath("//ul[@role=\"listbox\"]/p-dropdownitem"));
-        for (int i = 0; i < campuslist.size(); i++) {
-            if (campuslist.get(i).getText().equals(campus)) {
-                DriverAction.click(campuslist.get(i));
-                flag = 1;
-                break;
+        try {
+            int flag = 0;
+            DriverAction.click(SuperadminLocator.campusDrpdwn);
+            List<WebElement> campuslist = DriverAction.getElements(By.xpath("//ul[@role=\"listbox\"]/p-dropdownitem"));
+            for (int i = 0; i < campuslist.size(); i++) {
+                System.out.println(campuslist.get(i).getText());
+                if (campuslist.get(i).getText().equals(campus)) {
+                    DriverAction.click(campuslist.get(i));
+                    flag = 1;
+                    break;
+                }
             }
-        }
-        if (flag == 1) {
-            GemTestReporter.addTestStep("Campus found", "Campus value is valid", STATUS.PASS, DriverAction.takeSnapShot());
-        } else {
-            GemTestReporter.addTestStep("Experience not found", "Experience value is invalid. Kindly check", STATUS.FAIL, DriverAction.takeSnapShot());
+            if (flag == 1) {
+                reporter("Campus found", "Campus value is valid", STATUS.PASS);
+            } else {
+                reporter("Experience not found", "Experience value is invalid. Kindly check", STATUS.FAIL);
+            }
+        } catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
         }
     }
-    //Complete table://div[@class='p-datatable-wrapper ng-star-inserted']
+
+
 
     @Then("Validate availability of Test Record")
     public void validateAvailabilityOfTestRecord() {
 
     }
+
+    //----------------------Questions Scenario--------------------------------------------------------------------
+    @When("^Click on test tab (.+)")
+    public void clickOnTestTabOption(String option) {
+        try {
+            DriverAction.click(SuperadminLocator.testTabSel(option));
+        } catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
+    }
+
+    @Then("Check Download Question Template")
+    public void checkDownloadQuestionTemplate() {
+        try {
+            String toastmessage = "Template has been successfully downloaded. Kindly check the downloaded log file for status.";
+            String errortoast="Section already exists. Please enter a unique section name.";
+            DriverAction.click(SuperadminLocator.questTempDwnd);
+            WebDriverWait wait = new WebDriverWait(DriverManager.getWebDriver(), 20);
+            wait.until(ExpectedConditions.presenceOfElementLocated(AthenaLocator.toast));
+            if (DriverAction.getElement(AthenaLocator.toast).getAttribute("innerHTML").contains(toastmessage)) {
+                reporter("Download Successful", "Question Template is Downloaded Successfully", STATUS.PASS);
+            } else if (DriverAction.getElement(AthenaLocator.toast).getAttribute("innerHTML").contains(errortoast)) {
+                reporter("New Section creation failed","Testname already exist",STATUS.FAIL);
+            } else {
+                reporter("Download Unsuccessfull", "Question Template not downloaded", STATUS.FAIL);
+            }
+        } catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
+    }
+
+    @Then("Validate Import Question Button")
+    public void validateImportQuestionButton() {
+        try {
+            WebDriverWait wait = new WebDriverWait(DriverManager.getWebDriver(), 20);
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(AthenaLocator.toast));
+//            DriverAction.waitSec(4);
+            DriverAction.click(SuperadminLocator.importQuest);
+            DriverAction.waitSec(2);
+            if (DriverAction.isExist(By.xpath("//div[contains(@class,'p-dialog-footer')]//span[text()='Cancel']")))
+                reporter("Click on Import Question Successful", "Window appeared for Import Questions", STATUS.PASS);
+            else reporter("Click on import Unsuccessful", "Window doesn't popup for Import Questions", STATUS.FAIL);
+        } catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
+    }
+
+    @Then("^Add New (.+) working")
+    public void addNewQuestionWorking(String opt) {
+        try {
+            DriverAction.click(SuperadminLocator.addnew(opt));
+        } catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
+    }
+
+    @When("Click on Campus")
+    public void clickOnCampus() {
+        try{
+            List<WebElement> togglelist = DriverAction.getElements(SuperadminLocator.toglstoptions);
+            for (int i = 0; i < togglelist.size(); i++) {
+                if (togglelist.get(i).getText().equals("Campus")) {
+                    DriverAction.click(togglelist.get(i));
+                    DriverAction.waitSec(5);
+                    DriverAction.click(SuperadminLocator.toglclose);
+                    break;
+                }
+            }
+        }catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
+    }
+
+    @When("Click on User Management")
+    public void clickOnUserManagement() {
+        try{
+            List<WebElement> togglelist = DriverAction.getElements(SuperadminLocator.toglstoptions);
+            for (int i = 0; i < togglelist.size(); i++) {
+                if (togglelist.get(i).getText().equals("User Management")) {
+                    DriverAction.click(togglelist.get(i));
+                    DriverAction.waitSec(5);
+                    DriverAction.click(SuperadminLocator.toglclose);
+                    break;
+                }
+            }
+        }catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
+    }
+
+    @When("Click on Role Management")
+    public void clickOnRoleManagement() {
+        try{
+            List<WebElement> togglelist = DriverAction.getElements(SuperadminLocator.toglstoptions);
+            for (int i = 0; i < togglelist.size(); i++) {
+                if (togglelist.get(i).getText().equals("Role Management")) {
+                    DriverAction.click(togglelist.get(i));
+                    DriverAction.waitSec(5);
+                    DriverAction.click(SuperadminLocator.toglclose);
+                    break;
+                }
+            }
+        }catch (Exception e) {
+            reporter("Exception Occure", "Error occured", STATUS.FAIL);
+        }
+    }
+
+
+    //Complete table://div[@class='p-datatable-wrapper ng-star-inserted']
+/*try{
+
+    }catch (Exception e) {
+        reporter("Exception Occure", "Error occured", STATUS.FAIL);
+    }
+    */
+
 }
