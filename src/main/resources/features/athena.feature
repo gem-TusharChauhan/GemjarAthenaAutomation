@@ -28,7 +28,6 @@ Feature: Athena Portal Automation
       |  user           |pass    | newpass |
       |tushar1@gmail.com|abc@1234| abc@123 |
 
-
   Scenario Outline: Unsuccessful login
     Given Enter username as <username> and password as <password>
     When Click on signin

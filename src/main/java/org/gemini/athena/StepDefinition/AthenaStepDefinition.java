@@ -7,17 +7,14 @@ import com.gemini.generic.ui.utils.DriverManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.devtools.v85.webaudio.WebAudio;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import Locators.Locator;
+import org.gemini.athena.Locators.AthenaLocator;
 
-import java.sql.Driver;
-import java.time.Duration;
 import java.util.List;
 
 
@@ -35,7 +32,7 @@ public class AthenaStepDefinition {
         try {
             String s = DriverAction.getCurrentURL();
             String title = DriverAction.getTitle(s);
-            if (DriverAction.isExist(Locator.usernm)) {
+            if (DriverAction.isExist(AthenaLocator.usernm)) {
                 GemTestReporter.addTestStep("Page title", "title= " + title, STATUS.INFO);
                 logger.info("Page title = " + title);
             }
@@ -50,10 +47,10 @@ public class AthenaStepDefinition {
     @When("^Entering username (.+) and (.+) password")
     public void Entering_username_and_password(String user, String pass) throws Exception {
         try {
-                DriverAction.waitUntilElementAppear(Locator.usernm,5);
-                DriverAction.typeText(Locator.usernm, user);
-                DriverAction.typeText(Locator.pswrd, pass);
-                DriverAction.click(Locator.lgnbtn);
+                DriverAction.waitUntilElementAppear(AthenaLocator.usernm,5);
+                DriverAction.typeText(AthenaLocator.usernm, user);
+                DriverAction.typeText(AthenaLocator.pswrd, pass);
+                DriverAction.click(AthenaLocator.lgnbtn);
                 DriverAction.waitSec(3);
             }
         catch (Exception e) {
@@ -65,10 +62,10 @@ public class AthenaStepDefinition {
     @Then("^Verify (.+) tests")
     public void Verify_tests(String test) throws Exception {
         try {
-            DriverAction.waitUntilElementAppear(Locator.activetst,5);
+            DriverAction.waitUntilElementAppear(AthenaLocator.activetst,5);
             if (test.equals("Active")) {
-                DriverAction.click(Locator.activetst);
-                List<WebElement> tests = DriverAction.getElements(Locator.listactivetst);
+                DriverAction.click(AthenaLocator.activetst);
+                List<WebElement> tests = DriverAction.getElements(AthenaLocator.listactivetst);
                 String msg = tests.get(0).getText();
                 if (msg.equals("No Test Found")) {
                     logger.info("There are no active tests");
@@ -84,9 +81,9 @@ public class AthenaStepDefinition {
                     GemTestReporter.addTestStep("Test Found", "Active test validated", STATUS.PASS, DriverAction.takeSnapShot());
                 }
             } else if (test.equals("Completed")) {
-                DriverAction.click(Locator.completedtst);
+                DriverAction.click(AthenaLocator.completedtst);
                 DriverAction.waitSec(2);
-                List<WebElement> tests = DriverAction.getElements(Locator.listcompletestst);
+                List<WebElement> tests = DriverAction.getElements(AthenaLocator.listcompletestst);
                 String msg = tests.get(0).getText();
                 if (msg.equals("No Test Found")) {
                     logger.info("There are no completed tests");
@@ -115,13 +112,13 @@ public class AthenaStepDefinition {
     @Given("^Navigate to my profile after login (.+) and (.+)")
     public void Navigate_to_my_profile_after_login_and(String user, String pass) throws Exception {
         try {
-            DriverAction.waitUntilElementAppear(Locator.usernm,5);
-            DriverAction.typeText(Locator.usernm, user);
-            DriverAction.typeText(Locator.pswrd, pass);
-            DriverAction.click(Locator.lgnbtn);
-            DriverAction.waitUntilElementAppear(Locator.profiledropdwn,3);
-            DriverAction.click(Locator.profiledropdwn);
-            DriverAction.click(Locator.profileclick);
+            DriverAction.waitUntilElementAppear(AthenaLocator.usernm,5);
+            DriverAction.typeText(AthenaLocator.usernm, user);
+            DriverAction.typeText(AthenaLocator.pswrd, pass);
+            DriverAction.click(AthenaLocator.lgnbtn);
+            DriverAction.waitUntilElementAppear(AthenaLocator.profiledropdwn,3);
+            DriverAction.click(AthenaLocator.profiledropdwn);
+            DriverAction.click(AthenaLocator.profileclick);
 
             logger.info("Current URL is " + DriverAction.getCurrentURL());
         } catch (Exception e) {
@@ -148,7 +145,7 @@ public class AthenaStepDefinition {
     @Then("Click on Explore test and validate URL")
     public void Click_on_Explore_test_and_validate_url() throws Exception {
         try {
-            DriverAction.click(Locator.explrtst);
+            DriverAction.click(AthenaLocator.explrtst);
             String url = DriverAction.getCurrentURL();
             logger.info("Validating the URL");
             if (url.equals(aftrlogin)) {
@@ -168,9 +165,9 @@ public class AthenaStepDefinition {
     @Given("^Login to Athena portal using username (.+) and (.+) password")
     public void login_to_athena_portal_using_username_and_password(String user, String pass) throws Exception {
         try {
-            DriverAction.typeText(Locator.usernm, user);
-            DriverAction.typeText(Locator.pswrd, pass);
-            DriverAction.click(Locator.lgnbtn);
+            DriverAction.typeText(AthenaLocator.usernm, user);
+            DriverAction.typeText(AthenaLocator.pswrd, pass);
+            DriverAction.click(AthenaLocator.lgnbtn);
             DriverAction.waitSec(3);
         } catch (Exception e) {
             logger.info("An exception occurred!", e);
@@ -181,17 +178,17 @@ public class AthenaStepDefinition {
     @When("^Navigating to change password (.+) and creating new password (.+)")
     public void navigating_to_change_password_and_creating_new_password(String pass, String newpass) {
         try {
-                DriverAction.waitUntilElementAppear(Locator.profiledropdwn,5);
-                DriverAction.click(Locator.profiledropdwn);
-                DriverAction.click(Locator.chngpwd);
+                DriverAction.waitUntilElementAppear(AthenaLocator.profiledropdwn,5);
+                DriverAction.click(AthenaLocator.profiledropdwn);
+                DriverAction.click(AthenaLocator.chngpwd);
                 DriverAction.waitUntilElementAppear(By.id("oldPassword"),3);
                 DriverAction.typeText(By.id("oldPassword"), pass);
                 DriverAction.typeText(By.id("password"), newpass);
                 DriverAction.typeText(By.id("confirmPassword"), newpass);
                 DriverAction.click(By.xpath("//button/span[text()=\"Change Password\"]"));
                 DriverAction.waitSec(5);
-                DriverAction.click(Locator.profiledropdwn);
-                DriverAction.click(Locator.logoutbtn);
+                DriverAction.click(AthenaLocator.profiledropdwn);
+                DriverAction.click(AthenaLocator.logoutbtn);
         }catch (Exception e) {
             logger.info("An exception occurred!", e);
             GemTestReporter.addTestStep("EXCEPTION ERROR", "SOME ERROR OCCURRED", STATUS.FAIL);
@@ -200,9 +197,9 @@ public class AthenaStepDefinition {
 
     @Then("^Setting new password as (.+) and checking (.+) relogin")
     public void setting_new_password_as_and_checking_relogin(String newpass, String user) throws Exception {
-        DriverAction.typeText(Locator.usernm, user);
-        DriverAction.typeText(Locator.pswrd, newpass);
-        DriverAction.click(Locator.lgnbtn);
+        DriverAction.typeText(AthenaLocator.usernm, user);
+        DriverAction.typeText(AthenaLocator.pswrd, newpass);
+        DriverAction.click(AthenaLocator.lgnbtn);
         DriverAction.waitSec(2);
         if (DriverAction.getCurrentURL().equals(aftrlogin)) {
             GemTestReporter.addTestStep("Validated URL", "Login Successfull", STATUS.PASS, DriverAction.takeSnapShot());
@@ -236,7 +233,7 @@ public class AthenaStepDefinition {
     @When("Click on signin")
     public void clicking_on_signin() throws Exception {
         try {
-            DriverAction.click(Locator.lgnbtn);
+            DriverAction.click(AthenaLocator.lgnbtn);
             DriverAction.waitSec(2);
 
         } catch (Exception e) {
@@ -264,7 +261,7 @@ public class AthenaStepDefinition {
     @Given("Click on signup")
     public void clicking_on_signup() throws Exception {
         try {
-            DriverAction.click(Locator.signup);
+            DriverAction.click(AthenaLocator.signup);
         } catch (Exception e) {
             logger.info("An exception occurred!", e);
             GemTestReporter.addTestStep("EXCEPTION ERROR", "SOME ERROR OCCURRED", STATUS.FAIL);
@@ -276,18 +273,18 @@ public class AthenaStepDefinition {
 
         try {
             int flag = 0;
-            DriverAction.waitUntilElementAppear(Locator.newemail,5);
+            DriverAction.waitUntilElementAppear(AthenaLocator.newemail,5);
             if (DriverAction.getCurrentURL().equals(signupurl)) {
                 GemTestReporter.addTestStep("Navigation successfull", "Signup page displayed", STATUS.PASS, DriverAction.takeSnapShot());
                 //Entering common signup details
-                DriverAction.typeText(Locator.newemail, email);
-                DriverAction.typeText(Locator.newpwd, pass);
-                DriverAction.typeText(Locator.newcnfrmpwd, cnfpass);
-                DriverAction.typeText(Locator.newfstnm, fstnm);
-                DriverAction.typeText(Locator.newlstnm, lstnm);
-                DriverAction.typeText(Locator.newcntct, cntct);
+                DriverAction.typeText(AthenaLocator.newemail, email);
+                DriverAction.typeText(AthenaLocator.newpwd, pass);
+                DriverAction.typeText(AthenaLocator.newcnfrmpwd, cnfpass);
+                DriverAction.typeText(AthenaLocator.newfstnm, fstnm);
+                DriverAction.typeText(AthenaLocator.newlstnm, lstnm);
+                DriverAction.typeText(AthenaLocator.newcntct, cntct);
                 //Selecting Experience
-                DriverAction.click(Locator.expdrpdwn);
+                DriverAction.click(AthenaLocator.expdrpdwn);
                 List<WebElement> explist = DriverAction.getElements(By.xpath("//ul[@role=\"listbox\"]/p-dropdownitem"));
                 for (int i = 0; i < explist.size(); i++) {
                     if (explist.get(i).getText().equals(exp)) {
@@ -304,7 +301,7 @@ public class AthenaStepDefinition {
                 flag=0;
                 //Checking for exp value
                 if (exp.equals("Fresher")) {
-                    DriverAction.click(Locator.campusdrpdwn);
+                    DriverAction.click(AthenaLocator.campusdrpdwn);
                     List<WebElement> campuslist = DriverAction.getElements(By.xpath("//ul[@role=\"listbox\"]/p-dropdownitem"));
                     for (int i = 0; i < campuslist.size(); i++) {
                         if (campuslist.get(i).getText().equals(campus)) {
@@ -321,7 +318,7 @@ public class AthenaStepDefinition {
                 }
                 //Entering experience in months
                 else if (exp.equals("Experience")) {
-                    DriverAction.typeText(Locator.countexp, expcount);
+                    DriverAction.typeText(AthenaLocator.countexp, expcount);
                 } else {
                     GemTestReporter.addTestStep("Error value", "Invalid Experience value", STATUS.FAIL, DriverAction.takeSnapShot());
                 }
@@ -338,13 +335,13 @@ public class AthenaStepDefinition {
     @Then("Validating signup")
     public void validating_signup() throws Exception {
         try {
-            DriverAction.click(Locator.sgnupbuttn);
+            DriverAction.click(AthenaLocator.sgnupbuttn);
             WebDriverWait wait = new WebDriverWait(DriverManager.getWebDriver(), 20);
-            wait.until(ExpectedConditions.presenceOfElementLocated(Locator.toast));
+            wait.until(ExpectedConditions.presenceOfElementLocated(AthenaLocator.toast));
 
-            if (DriverAction.getElement(Locator.toast).getAttribute("innerHTML").contains("User registered successfully")) {
+            if (DriverAction.getElement(AthenaLocator.toast).getAttribute("innerHTML").contains("User registered successfully")) {
                 GemTestReporter.addTestStep("Signup Successfull", "User register successful", STATUS.PASS, DriverAction.takeSnapShot());
-            } else if (DriverAction.getElement(Locator.toast).getAttribute("innerHTML").contains("The username already exist in system")) {
+            } else if (DriverAction.getElement(AthenaLocator.toast).getAttribute("innerHTML").contains("The username already exist in system")) {
                 GemTestReporter.addTestStep("Already exist user", "User values already exist", STATUS.PASS, DriverAction.takeSnapShot());
             } else {
                 GemTestReporter.addTestStep("Signup Unsuccessfull", "User not registered", STATUS.FAIL, DriverAction.takeSnapShot());
@@ -359,7 +356,7 @@ public class AthenaStepDefinition {
     public void click_on_forgot_password_link() throws Exception {
         try{
         DriverAction.waitSec(2);
-        DriverAction.click(Locator.frgtpswrd);
+        DriverAction.click(AthenaLocator.frgtpswrd);
         if(DriverAction.getCurrentURL().equals(forgoturl)){
             GemTestReporter.addTestStep("Navigation Successful","Forgot password page is displayed",STATUS.PASS,DriverAction.takeSnapShot());
         }
@@ -389,11 +386,11 @@ public class AthenaStepDefinition {
     public void validating_reset_mail_sent_or_not_to_(String user) throws Exception{
         try {
             WebDriverWait wait = new WebDriverWait(DriverManager.getWebDriver(), 20);
-            wait.until(ExpectedConditions.presenceOfElementLocated(Locator.toast));
+            wait.until(ExpectedConditions.presenceOfElementLocated(AthenaLocator.toast));
 
-            if (DriverAction.getElement(Locator.toast).getAttribute("innerHTML").contains("Reset password mail sent successfully!")) {
+            if (DriverAction.getElement(AthenaLocator.toast).getAttribute("innerHTML").contains("Reset password mail sent successfully!")) {
                 GemTestReporter.addTestStep("RESET Successful", "Reset mail is sent on email", STATUS.PASS, DriverAction.takeSnapShot());
-            } else if (DriverAction.getElement(Locator.toast).getAttribute("innerHTML").contains("User not found with email "+ user)) {
+            } else if (DriverAction.getElement(AthenaLocator.toast).getAttribute("innerHTML").contains("User not found with email "+ user)) {
                 GemTestReporter.addTestStep("Invalid Username", "Username not found with " +user, STATUS.PASS, DriverAction.takeSnapShot());
             } else {
                 GemTestReporter.addTestStep("Signup Unsuccessfull", "User not registered", STATUS.PASS, DriverAction.takeSnapShot());
@@ -404,4 +401,5 @@ public class AthenaStepDefinition {
             GemTestReporter.addTestStep("EXCEPTION ERROR", "SOME ERROR OCCURRED", STATUS.FAIL);
         }
     }
+
 }

@@ -12,15 +12,15 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>15</maven.compiler.source>
+    <maven.compiler.target>15</maven.compiler.target>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.gemecosystem.gemjar</groupId>
       <artifactId>gemjar-core</artifactId>
-      <version>1.1.6</version>
+      <version>1.1.8</version>
     </dependency>
   </dependencies>
 </project>
