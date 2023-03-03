@@ -36,7 +36,7 @@ Feature:SuperAdmin User Scenarios
     Then Validate Import Question Button
     Then Add New Questions working
 
-  Scenario Outline: Test Question scenario with Other Two
+  Scenario Outline: Test Question scenario with Other Two Options
     When Click on Test Section
     When Select test Questions options
     When Click on test tab <option>
@@ -49,6 +49,34 @@ Feature:SuperAdmin User Scenarios
   Scenario:Validating Campus option
     Then Verify options are visible after toggle click
     When Click on Campus
+    Then Validate Campus page is displayed
+
+  Scenario: Validate navigation to Registration page in Campus List
+    When Verify options are visible after toggle click
+    And Click on Campus
+    And Click on Register Campus
+    Then Validate Registration page is displayed or not
+
+
+  Scenario Outline: Registering new Campus in Campus List
+    When Verify options are visible after toggle click
+    And Click on Campus
+    And Click on Register Campus
+    And Enter all the mandatory fields as "<cName>" "<cEmail>" "<location>" "<university>" "<tponame>" "<tpomail>" "<tpocontact>" "<desc>"
+    Then Validate Campus Registration
+    Examples:
+      | cName  | cEmail         | location | university | tponame | tpomail        | tpocontact | desc            |
+      | Gemini | gem@gemini.com | Gurgaon  | Test       | Tushar  | tush@gmail.com | 9898989867 | Testing Purpose |
+
+  Scenario:Validating Campus option
+    Then Verify options are visible after toggle click
+    When Click on Campus
+    Then Check Download Campus Template
+
+  Scenario:Validating Campus option
+    Then Verify options are visible after toggle click
+    When Click on Campus
+    Then Check Bulk Campus Upload
 
   Scenario:Validating User Management option
     Then Verify options are visible after toggle click

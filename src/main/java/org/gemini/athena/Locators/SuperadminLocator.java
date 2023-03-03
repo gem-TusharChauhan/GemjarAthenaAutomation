@@ -18,6 +18,7 @@ public class SuperadminLocator {
     public static By ongoingevttbl = By.xpath("//*[text()='Ongoing Events']");
     public static By campusDrpdwn = By.xpath("//div[contains(@class,'p-dropdown p-component')]//span[text()='Campus']");
     public static By questTempDwnd = By.xpath("//span[text()='Download Question Template']");
+    public static By campusTempDwnd = By.xpath("//span[text()='Download Campus Template']");
     public static By importQuest = By.xpath("//button[@icon='pi pi-upload']");
     public static By addnew(String name){
         return By.xpath("//p-tabpanel[@header='"+name+"']//span[text()='Add New']");
@@ -26,5 +27,9 @@ public class SuperadminLocator {
         return By.xpath("//li[@role='presentation']//span[text()='"+option+"']");
     }
     //pubic static By =By.xpath();
+    public static By registerbtn(String reg){
+        return By.xpath("//div/button[@label='"+reg+"']");
+    }
+
 
 }

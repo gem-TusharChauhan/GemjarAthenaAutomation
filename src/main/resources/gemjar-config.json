@@ -7,6 +7,7 @@
   "jewelEntryUrl": "https://apis.gemecosystem.com/enter-point",
   "glueCode":"org.gemini.athena.StepDefinition",
   "feature": "src/main/resources/features",
+  "reportName": "Athena_Report_UI",
   "emailReport": "N",
   "emailTO": "tushar.chauhan@geminisolutions.com",
   "beta": {
